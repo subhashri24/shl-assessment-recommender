@@ -1,0 +1,20 @@
+# Virtual environment
+venv/
+
+# Python cache
+__pycache__/
+*.pyc
+
+# Chroma database
+chroma_db/
+
+# Hugging Face cache
+.cache/
+*.bin
+*.safetensors
+
+# Environment variables
+.env
+
+# VS Code
+.vscode/
