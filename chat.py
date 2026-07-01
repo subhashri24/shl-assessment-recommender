@@ -8,7 +8,7 @@ from rag import search_catalog
 load_dotenv()
 
 genai.configure(api_key=os.getenv("GEMINI_API_KEY"))
-model = genai.GenerativeModel("gemini-2.0-flash")
+model = genai.GenerativeModel("gemini-2.5-flash")
 
 OFF_TOPIC = [
     "weather",
