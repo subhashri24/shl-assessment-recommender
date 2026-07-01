@@ -1,5 +1,6 @@
 import os
 import re
+from click import prompt
 from dotenv import load_dotenv
 import google.generativeai as genai
 from rag import search_catalog
@@ -186,20 +187,25 @@ URL:
 """
 
     prompt = f"""
-You are an SHL assessment recommendation assistant.
+You are an SHL Assessment Expert.
 
-The user has not provided enough information.
+Use ONLY the assessments below.
+
+Never invent assessments.
+
+If no exact assessment exists, clearly say so.
+
+Recommend the closest SHL assessments.
+
+Explain why each assessment matches.
+
+Catalog:
+
+{context}
 
 User request:
 
 {query}
-Ask ONE concise follow-up question that will help recommend SHL assessments.
-
-Do NOT ask for information the user has already provided.
-
-Only ask the most important missing question.
 """
-
     reply = model.generate_content(prompt).text
-
-    return reply, recommendations, False
+    return reply, recommendations, True
