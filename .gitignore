@@ -18,3 +18,5 @@ chroma_db/
 
 # VS Code
 .vscode/
+catalog_raw.json
+catalog_raw.txt
