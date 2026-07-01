@@ -3,9 +3,6 @@ from pydantic import BaseModel
 from chat import chat
 import os
 
-if not os.path.exists("chroma_db"):
-    import build_db
-
 app = FastAPI()
 
 
