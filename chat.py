@@ -186,15 +186,9 @@ URL:
 """
 
     prompt = f"""
-You are an SHL Assessment Expert.
+You are an SHL assessment recommendation assistant.
 
-Use ONLY the assessments below.
-
-Recommend the most suitable ones.
-
-Explain WHY each is relevant.
-
-Never invent assessments.
+The user has not provided enough information.
 
 Context:
 
@@ -203,8 +197,13 @@ Context:
 User request:
 
 {query}
+Ask ONE concise follow-up question that will help recommend SHL assessments.
+
+Do NOT ask for information the user has already provided.
+
+Only ask the most important missing question.
 """
 
     reply = model.generate_content(prompt).text
 
-    return reply, recommendations, True
+    return reply, recommendations, False
