@@ -190,10 +190,6 @@ You are an SHL assessment recommendation assistant.
 
 The user has not provided enough information.
 
-Context:
-
-{context}
-
 User request:
 
 {query}
