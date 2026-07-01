@@ -1,31 +1,43 @@
-import chromadb
-from sentence_transformers import SentenceTransformer
+import json
 
-client = chromadb.PersistentClient(path="./chroma_db")
-collection = client.get_collection("shl_catalog")
-
-model = SentenceTransformer("all-MiniLM-L6-v2")
+with open("catalog.json", "r", encoding="utf-8") as f:
+    catalog = json.load(f)
 
 
 def search_catalog(query, top_k=5):
-    embedding = model.encode(query).tolist()
+    query = query.lower()
 
-    results = collection.query(
-        query_embeddings=[embedding],
-        n_results=top_k
-    )
+    scored = []
+
+    for item in catalog:
+
+        score = 0
+
+        text = (
+            f"{item.get('name','')} "
+            f"{item.get('description','')} "
+            f"{item.get('job_levels_raw','')} "
+            f"{item.get('test_types_raw','')}"
+        ).lower()
+
+        for word in query.split():
+            if word in text:
+                score += 1
+
+        if score > 0:
+            scored.append((score, item))
+
+    scored.sort(reverse=True, key=lambda x: x[0])
 
     recommendations = []
 
-    for metadata, document in zip(
-        results["metadatas"][0],
-        results["documents"][0]
-    ):
+    for _, item in scored[:top_k]:
+
         recommendations.append({
-            "name": metadata["name"],
-            "url": metadata["url"],
-            "test_type": metadata.get("test_type", ""),
-            "description": document
+            "name": item["name"],
+            "url": item["link"],
+            "test_type": item.get("test_types_raw", "Assessment"),
+            "description": item.get("description", "")
         })
 
     return recommendations
